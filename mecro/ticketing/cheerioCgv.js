@@ -1,0 +1,170 @@
+var webdriver = require('selenium-webdriver'),
+    By = webdriver.By,
+    until = webdriver.until;
+var inter;
+var b = 1;
+var driver = new webdriver.Builder()
+    .forBrowser('chrome').build(); //forBrowser 로 브라우저 설정후 Build
+var util = require('util');
+//http://ticket.cgv.co.kr/Reservation/Reservation.aspx?MOVIE_CD=20013333&MOVIE_CD_GROUP=20013052&PLAY_YMD=20170723&THEATER_CD=0074&PLAY_NUM=5&PLAY_START_TM=1620&AREA_CD=&SCREEN_CD=009
+driver.get('http://ticket.cgv.co.kr/Reservation/Reservation.aspx?MOVIE_CD=20016057&MOVIE_CD_GROUP=20015673&PLAY_YMD=20180426&THEATER_CD=0013&PLAY_START_TM=&PLAY_NUM=&SCREEN_CD=018')
+  .then(function(){
+
+
+     driver.wait(until.elementLocated(By.xpath("//li[@play_start_tm='0840']")))
+     .then(function(){
+       driver.sleep(2000)
+      driver.findElement(By.xpath("//li[@play_start_tm='0840']")).click();
+
+       })
+    .then(function(){
+      driver.sleep(2000)
+    driver.findElement(By.xpath("//*[@id='tnb_step_btn_right']")).getText()
+    .then(function(res){
+      driver.executeScript("OnTnbRightClick()")//function 실행
+      console.log(res)
+      // driver.findElement(By.id("tnb_step_btn_right")).click()
+    })
+    // .then(function(allhandles) { //호출한 메서드에 대한 데이터
+    //                 driver.switchTo().window(allhandles[1]).then(function() {});
+    //                 driver.wait(until.elementLocated(By.xpath("//input[@id='txtUserId']")));
+    // })
+    .then(function(){
+      driver.sleep(2000);
+      driver.findElement(By.xpath("//input[@id='txtUserId']")).sendKeys("jmcreat");
+      driver.findElement(By.xpath("//input[@id='txtPassword']")).sendKeys("audcjf90!");
+      driver.findElement(By.xpath("//button[@class='btn_login']")).click();
+    })
+    .then(function(){
+      //로그인후 재진입
+      driver.wait(until.elementLocated(By.xpath("//li[@play_start_tm='1620']")))
+      .then(function(){
+        driver.sleep(2000)
+       driver.findElement(By.xpath("//li[@play_start_tm='1620']")).click();
+        })
+        .then(function(res){
+          driver.executeScript("OnTnbRightClick()")//function 실행
+          console.log(res)
+          // driver.findElement(By.id("tnb_step_btn_right")).click()
+        })
+        .then(function(){
+          driver.sleep(10000)
+        //  driver.wait(until.elementLocated(By.xpath("//a[@title='확인']")))
+         driver.findElement(By.xpath("//a[@class='btn_ok']")).getText();
+          })
+        .then(function(res){
+          console.log(res)
+        //   driver.sleep(2000)
+        //  driver.findElement(By.xpath("//a[@title='확인']")).click();
+          })
+
+    })
+
+
+
+    })
+
+
+
+
+
+
+  })
+// driver.get('http://moneybook.naver.com/mybook/write.nhn')
+//     .then(function() {
+//         return check_title();
+//         driver.wait(until.elementLocated(By.id("gnb_login_button")))
+//     })
+//     .then(function() {
+//         console.log('true accept page');
+//         // driver.sleep(2000);
+//         return driver.findElement(By.id("gnb_login_button")).click()
+//
+//         driver.wait(until.elementLocated(By.name("id")));
+//     })
+//     .then(function() {
+//         console.log('true login_page');
+//         driver.findElement(By.name('id')).sendKeys('jmcreat');
+//         driver.findElement(By.name('pw')).sendKeys('audcjf90@');
+//         return driver.findElement(By.xpath("//input[@class='btn_global']")).click();
+//         driver.wait(until.elementLocated(By.xpath("//a[@class='btn_import']")));
+//     })
+//     .then(function() {
+//         console.log('true login success');
+//         // driver.sleep(2000);
+//         return driver.findElement(By.xpath("//a[@class='btn_import']")).click().then(function() {
+//             driver.sleep(2000);
+//
+//         });
+//     })
+//     .then(function() {
+//         console.log('true insert popup window');
+//
+//         driver.getAllWindowHandles()
+//             .then(function(allhandles) { //호출한 메서드에 대한 데이터
+//                 return driver.switchTo().window(allhandles[1]).then(function() {});
+//                 driver.wait(until.elementLocated(By.xpath("//a[@class='excel_upload']")));
+//             });
+//     })
+//     .then(function() {
+//         console.log('true switch popup window');
+//         return driver.findElement(By.xpath("//input[@type='file']")).sendKeys("/Users/mac/Downloads/test.xlsx")
+//             .then(function() {
+//                 console.log(new Date() + 'true excel 파일 업로드 중')
+//
+//                 return driver.findElement(By.xpath("//a[@class='excel_upload']")).click();
+//             })
+//     }).then(function() {
+//         console.log(new Date() + 'start interval')
+//
+//         inter = setInterval(findnum, 5000);
+//     })
+//
+// .catch(function(e) {
+//     console.error('e =' + e);
+//     console.log('false');
+// });
+//
+// function findnum() {
+//     console.log('start find num')
+//
+//
+//     driver.actions().mouseMove(driver.findElement(By.name('XlsUpload')), {
+//         x: 346,
+//         y: 380
+//     }).click()
+//     .perform()
+//       .then(function() {
+//         driver.sleep(2000);
+//
+//
+//         driver.wait(until.elementLocated(By.id("wrap_pop_h")),5000)
+//         driver.findElement(By.xpath("//div/h1")).getText()
+//             .then(function(text) {
+//                 console.log("text..." + text)
+//                 if (text === '사용내역 엑셀 업로드 개선') {
+//                     console.log(b + "회 만에 버튼 클릭");
+//                     console.log(new Date() + '가계부 업로드 완료');
+//                   clearInterval(inter);
+//                    driver.quit();
+//
+//                 } else {
+//                     console.log(new Date() + "버튼찾기 시도중" + b + "회 시도중");
+//                     b++;
+//                 }
+//             })
+//
+//     })
+// }
+//
+// function check_title() {
+//     var promise = new Promise(function(resolve, reject) {
+//         driver.getTitle().then(function(title) {
+//             console.log('title = ' + title);
+//             resolve();
+//         }, function(e) {
+//             reject();
+//         })
+//     });
+//     return promise;
+// }
