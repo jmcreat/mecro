@@ -27,17 +27,14 @@ driver.get('https://www.crowdworks.kr/')
 .then(function() {
     console.log('into check page');
 driver.findElement(By.xpath("//table[@class='tbl_inspectlist']/tbody/tr[1]/td[11]")).getText()
+})
 .then(function(test){
   console.log(test);
+  console.log(makeRandom()*1000)
+  setInterval(intervalroof,makeRandom()*1000*0.8);
 })
-// .then(function(){
-//   console.log(makeRandom()*1000)
-//   //setInterval(intervalroof,makeRandom()*1000);
-//   //until 사용해서 다음으로 넘어가기
-// })
-
  // driver.findElement(By.xpath("//a[@class='link_inspectlist link_worker_list']")).click();
-})
+
 
 //      driver.findElement(By.xpath("//tbody/tr")).getText()
 function sleepmethod() {
@@ -52,8 +49,23 @@ function sleepmethod() {
     return promise;
 }
 function intervalroof() {
+      var promise = new Promise(function(resolve, reject) {
   driver.navigate().refresh();
-  console.log(makeRandom())
+  console.log('random 시간'+makeRandom())
+  driver.wait(until.elementLocated(By.xpath("//table[@class='tbl_inspectlist']")))
+  .then(function(){
+      driver.findElement(By.xpath("//table[@class='tbl_inspectlist']/tbody/tr[1]/td[11]")).getText()
+      .then(function(test){
+        console.log('검수대기 '+test);
+        if(test>0){
+          console.log('검수대기 발견!!');
+          driver.findElement(By.xpath("//table[@class='tbl_inspectlist']/tbody/tr[1]/td[4]")).click();
+        }
+      })
+  })
+
+
+      });
 }
 function makeRandom(){
   return parseInt(Math.random()*10+10);
