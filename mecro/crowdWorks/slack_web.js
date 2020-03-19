@@ -11,12 +11,10 @@
 //     }),
 //     level: "error"
 // });
-//https://hooks.slack.com/services/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
 //////////////////////////////////////////////////////////////////////
-//skack token : xoxb-70950968704-Mdbgb3kwVYXZ00eXWXdMOZJJ
 const Slack = require('slack-node');  // 슬랙 모듈 사용
 
-apiToken = "xoxb-70950968704-Mdbgb3kwVYXZ00eXWXdMOZJJ";
+apiToken = "api topken 입력";
 const slack = new Slack(apiToken);
 
 const send = async(message) => {
